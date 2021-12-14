@@ -1,28 +1,24 @@
-let sky = require("skynet-js");
-const fs = require("fs");
+const fs = require("fs-extra");
+const sassPlugin = require("esbuild-plugin-sass");
 const esbuild = require("esbuild");
 const ejs = require("ejs");
 let Walk = require("walkdir");
 const path = require("path");
 (async () => {
 	let config = {};
-	const client = new sky.SkynetClient();
-	const { publicKey, privateKey } = sky.genKeyPairFromSeed(
-		fs.readFileSync("./seed.txt", "utf8")
-	);
-	console.log(publicKey, privateKey);
-	config.publicKey = publicKey;
-	if (!fs.existsSync("./.build")) {
-		fs.mkdirSync("./.build");
-	}
-	fs.writeFileSync("./.build/config.json", JSON.stringify(config));
+
 	esbuild.build({
 		entryPoints: [path.join(__dirname, "./js/index.js")],
 		outdir: "./bundle",
-
+		plugins: [sassPlugin()],
 		bundle: true,
 		allowOverwrite: true,
 		globalName: "handy",
+		define: {
+			global: "window",
+		},
+		sourcemap: true,
+		treeShaking: true,
 		minify: true,
 		write: true,
 	});
@@ -37,7 +33,10 @@ const path = require("path");
 		// if (Object.hasOwnProperty.call(paths, file)) {
 		const element = paths[file];
 
-		if (element.isFile()) {
+		if (
+			element.isFile() &&
+			!file.startsWith(path.join(__dirname, "pages", "components"))
+		) {
 			let relP = path.relative(path.join(__dirname, "pages"), file);
 			let buildedName;
 			let pgName = path.basename(relP).slice(0, -4);
@@ -62,6 +61,7 @@ const path = require("path");
 			}
 			fs.writeFileSync(buildedName, await ejs.renderFile(file, config));
 		}
+		fs.copySync("./static", "./bundle");
 
 		// }
 	}

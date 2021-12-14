@@ -1,5 +1,5 @@
 {
-  "name": "lightbeast",
+  "name": "dForms",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/angrymouse/handylist",
@@ -7,9 +7,22 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@microsoft/fast-components": "^2.16.7",
     "ejs": "^3.1.6",
     "esbuild": "^0.14.2",
+    "esbuild-plugin-sass": "^0.6.0",
+    "fs-extra": "^10.0.0",
     "sass": "^1.44.0",
+    "skynet-js": "^4.0.18-beta",
     "walkdir": "^0.4.1"
+  },
+  "scripts": {
+    "build": "node ./build.js",
+    "dev": "concurrently \"nodemon ./build.js -i bundle -e js,ejs,scss,css,json\" \"http-server ./bundle -p 4000 -c-1\" "
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "http-server": "^14.0.0",
+    "nodemon": "^2.0.15"
   }
 }

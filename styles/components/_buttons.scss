@@ -1,0 +1,33 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 12px;
+	border-radius: 4px;
+	transition: all 0.2s linear;
+	font-weight: 600;
+	border: none;
+	font-size: 16px;
+	text-decoration: none;
+}
+.button-lg {
+	font-size: 24px;
+	padding: 10px 16px;
+}
+.button.button-primary-2 {
+	background-color: $alt-3;
+	color: $primary-2;
+}
+.button.button-primary-1 {
+	background-color: $alt-3;
+	color: $primary-4;
+}
+.button.button-primary-1:hover {
+	border-radius: 0;
+	background-color: rgba($primary-4, 0.2);
+}
+
+.button.button-primary-2:hover {
+	border-radius: 0;
+	background-color: rgba($primary-2, 0.2);
+}
